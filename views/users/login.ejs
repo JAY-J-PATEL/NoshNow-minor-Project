@@ -1,0 +1,77 @@
+<% layout("/layouts/boilerplate") -%>
+<style>
+    .outerlogin {
+        
+        padding: 2rem;
+        margin-top: 4rem;
+        box-shadow: 2px 2px 20px gainsboro;
+    }
+
+    .login-btn {
+        width: 100%;
+        margin-top: 1.5rem;
+        background-color: #fe424d;
+        border-color: #fe424d;
+    }
+
+    .login-btn:hover {
+        background-color: #fe424fc9;
+        border-color: #fe424d;
+        
+    }
+
+    @media(min-width:1025px) {
+        .outerlogin {
+            width: 46rem;
+            margin-left: 16rem;
+            padding-top: 4rem;
+            padding-bottom: 4rem;
+            border-radius: 1rem;
+
+        }
+
+        .hed_login {
+            margin-bottom: 1rem;
+
+        }
+
+        .login-btn {
+            width: 100%;
+            margin-top: 1.5rem;
+            background-color: #fe424d;
+            border-color: #fe424d;
+        }
+    }
+    
+</style>
+
+<!-- <div class="row mt-3"> -->
+<div class="outerlogin">
+    <h3 class="col-xl-6 offset-xl-3 offset-xs-2 col-md-6 offset-md-3 hed_login"><b>Welcome to Wanderlust!</b></h3>
+    <div class="col-xl-6 col-xs-10 offset-xl-3">
+
+            <form action="/login" method="post" class="needs-validation" novalidate>
+                <div class="mb-3">
+                    <label for="username" class="form-label">username</label>
+                    <input 
+                        type="text" 
+                        name="username" 
+                        id="username"
+                        class="form-control" required>
+                        <div class="invalid-feedback">Looks good!</title></div>
+                </div>
+    
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input 
+                        type="password" 
+                        name="password" 
+                        id="password"
+                        class="form-control" required>
+                </div>
+    
+                <button class="btn btn-success login-btn">Login</button>
+            </form>
+        </div>
+    <!-- </div> -->
+</div>

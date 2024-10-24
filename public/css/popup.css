@@ -1,0 +1,9 @@
+.res-delbtn {
+    color: white;
+    background-color: #fe484d;
+}
+
+.res-delbtn:hover {
+    color: white;
+    background-color: #f03a40;
+}

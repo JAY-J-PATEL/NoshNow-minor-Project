@@ -1,0 +1,273 @@
+<% layout("/layouts/boilerplate") -%>
+
+<style>
+    .reserveListing button {
+        width: 100%;
+        padding-top: 0.4rem;
+        padding-bottom: 0.4rem;
+        outline: none;
+        border-radius: 10px;
+        font-size: 1rem;
+        background-color: #fe484d;
+        color: white;
+        font-weight: bold;
+        border: none;
+    }
+
+    .reserveListing button:hover {
+        background-color: #ee363c;
+        color: rgb(238, 238, 238);
+    }
+
+    .show-img {
+        height: 450px;
+    }
+
+    .reviewcard {
+        border-color: rgb(255, 238, 238);
+    }
+
+    .direct-reviews {
+        color: black;
+        margin-left: 0.8rem;
+        font-weight: bold;
+    }
+
+    .host b{
+        font-size: 18px;
+    }
+
+    .mapouter{position: relative;text-align: center;}
+    .gmap_canvas{overflow: hidden;background: none !important;}
+
+    @media(min-width:780px) {
+        .main-show-div {
+            display: flex;
+        }
+    }
+
+    .pre {
+        display: flex;
+        flex-wrap: wrap;
+        font-family: 'Plus Jakarta Sans', sans-serif !important;
+    }
+</style>
+
+<br>
+<div class="col-xl-10 offset-xl-1">
+    <h3><%= listing.title %></h3>
+    <% if(!currUser) { %>
+        <p style="opacity: 0.8;">To Leave a Review or Book a Listing please login or signup...</p>
+    <% } else { %> 
+        <br>
+    <% } %>
+</div>
+
+<div class="listing-card row-col-12 col-xl-10 col-md-8 offset-md-2 offset-xl-1 col-xs-12">
+    <img src="<%= listing.image.url %>" class="card-img-top show-img" alt="listing_image">
+</div>
+
+<% if(currUser) { %>
+<div class="main-show-div col-xl-10 col-md-12 offset-xl-1">
+    <div class="first-div col-xl-8 col-md-8 col-xs-12 offset-0">
+        <div class="row mt-3">
+
+        
+            <div class="listing-card row-col-12 col-xl-10 col-md-10 offset-md-2 offset-xl-1 col-xs-12 ms-0 fs-6">
+                    <div class="card-body">
+                        <p class="card-text">
+                            <!-- <p class="fs-6 host"><b>Hosted by <%= listing.owner.username %>&nbsp; -->
+                                <a class="direct-reviews" href="#reviews"> &#9733; Reviews</a></b></p>
+                            
+                            <p class="p"><%= listing.description %><br></p>
+                            &#8377; <%= listing.price.toLocaleString("en-IN") %><br><br>
+                            <span style="font-weight: 600; font-size: 18px;">
+                                <!-- <%= listing.location %>,&nbsp; -->
+                                <!-- <%= listing.country %> -->
+                            </span><br>
+                        </p>
+                </div>
+            </div>
+        
+                <br>
+                
+        
+        </div>
+        
+            <% if(currUser && listing.owner._id.equals(currUser._id)) {%> 
+                <div class="btns">
+                    <a href="/listings/<%= listing._id %>/edit" class="btn btn-dark offset-md-2 col-xl-1 offset-xl-0 add-btn">Edit</a>
+            
+                    <form method="post" action="/listings/<%= listing._id %>?_method=DELETE">
+                        <button class="btn btn-dark offset-3">Delete</button>
+                    </form>
+                </div>
+            <% } %>
+        <br>
+    </div>
+        <div class="second-div col-xl-4  rounded">
+            <div class="reserveListing col-xl-10 col-md-12 offset-xl-1 pt-3">
+                <!-- <form action="/listings/<%= listing.id %>/reserve" method="post" novalidate class="needs-validation">
+                    <b class="fs-3 mt-4">&#8377; <%= listing.price.toLocaleString("en-IN") %></b>&nbsp;&nbsp;night<br><br>
+                    <div class="reserve-detail">
+                        <div class="check-in border p-2 mb-2 rounded">
+                            Check-IN : &nbsp;&nbsp; 
+                            <input type="date" class="border border-0" name="reserve[checkin]" required>
+                            <div class="invalid-feedback">Please select Check-IN date</div>
+                        </div>
+                        <div class="check-out  border p-2 mb-2 rounded">
+                            Check-OUT : 
+                            <input type="date"  class="border border-0" name="reserve[checkout]" required>
+                            <div class="invalid-feedback">Please select Check-OUT date</div>
+                        </div>
+                        <div class="guest  border p-2 mb-3 rounded">
+                            Guest : 
+                            <input type="number" class="p-1 rounded border-1" placeholder="  1 guest " name="reserve[guest]" required>
+                            <div class="invalid-feedback">Please enter guest</div>
+                      </div>
+                    </div>   -->
+                    <button class="btn mt-3">Order</button>
+
+
+                <!-- </form> -->
+            </div>
+        </div>
+    </div>
+<% } else { %>
+    <div class="offset-xl-1">
+        <div class="listing-card row-col-12 col-xl-10 col-md-10 offset-md-2 offset-xl-6 col-xs-12 ms-0 fs-6">
+            <div class="card-body">
+                <p class="card-text">
+                    <a class="direct-reviews" href="#reviews"> &#9733; Reviews</a></b></p>
+                    
+                    <p><%= listing.description %><br></p>
+                    &#8377; <%= listing.price.toLocaleString("en-IN") %><br><br>
+                    <%= listing.location %><br>
+                    <%= listing.country %><br>
+                </p>
+            </div>
+        </div>
+    </div>
+
+
+    <br>
+<% } %>
+
+
+
+<!-- reviw div -->
+<div class="col-xl-10 offset-xl-1"  class="mb-3 mt-3">
+
+    <div id="reviews">
+        <hr>
+        <h4><b>Leave a Review</b></h4>
+    <% if(currUser) { %>
+    <form action="/listings/<%= listing.id %>/reviews" method="post" novalidate class="needs-validation">
+        <!-- <div>
+            <label for="rating">Rating</label>
+            <input 
+            class="form-range" 
+            type="range" 
+            min="1" max="5" 
+            id="rating" 
+            name="review[rating]">
+        </div> -->
+        <div class="mt-3">
+            <label for="rating" class="form-label">Rating</label>
+            <div class="rating-star-box">
+                <fieldset class="starability-slot">
+                
+                    <input type="radio" 
+                            id="no-rate" 
+                            class="input-no-rate" 
+                            name="review[rating]" value="1" 
+                            checked 
+                            aria-label="No rating." />
+                    <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                    <label for="first-rate1" title="Terrible">1 star</label>
+                    <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                    <label for="first-rate2" title="Not good">2 stars</label>
+                    <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                    <label for="first-rate3" title="Average">3 stars</label>
+                    <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                    <label for="first-rate4" title="Very good">4 stars</label>
+                    <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                    <label for="first-rate5" title="Amazing">5 stars</label>
+                </fieldset>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="comment">comment</label>
+            <textarea 
+            class="form-control" 
+            name="review[comment]" 
+            id="comment" 
+            cols="20" rows="5"
+            required
+            ></textarea>
+            <div class="invalid-feedback">Please add some comment for review</div>
+        </div>
+        <button class="btn btn-outline-dark">Submit</button>
+    </form>
+    <hr>
+    <% } %>
+
+    </div>
+
+
+
+    <% if(listing.reviews.length > 0) { %>
+        <p><b>All Reviews</b></p>
+    <% } %>
+
+    <div class="row col-xl-12">
+        <% for(review of listing.reviews) { %>
+            <div class="card reviewcard col-xl-5 ms-xl-3 mb-3">
+                <div class="card-body">
+                    <h5 class="card-body mt-3"><%= review.author.username %></h5>
+                    <p class="starability-result card-text" data-rating="<%= review.rating %>"></p>
+                    <p class="card-text"><%= review.comment %></p>
+                </div>
+            
+                <% if(currUser && currUser._id.equals(review.author._id)) { %>
+                    <form class="mb-3" method="post" action="/listings/<%= listing._id %>/reviews/<%= review._id%>?_method=DELETE">
+                        <button class="btn btn-sm btn-dark mb-2 mt-2">Delete</button>
+                    </form>
+                <% } %>
+                
+            </div>
+
+        <% } %>
+    </div>
+    <!-- <div class="col-6  mb-3">
+        <h3>Where you'll be</h3>
+        <div id="map"></div>
+        
+    </div> -->
+</div>
+
+    <!-- <div class="map col-xl-12col-xs-12">
+        <div class="mapouter">
+            <div class="gmap_canvas">
+                <iframe class="col-xl-10  offset-xl-0" style="height: 400px;" id="gmap_canvas" src="https://maps.google.com/maps?q=636+5th+Ave%2C+New+York&t=&z=13&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                <a href="https://online-timer.me/"></a><br>
+                <a href="https://online.stopwatch-timer.net/"></a><br>
+                <a href="https://www.embedmaps.co">custom google maps embed</a>
+            </div>
+        </div>
+    </div> -->
+
+
+<!-- <script>
+    let mapToken = "<%= process.env.MAP_TOKEN %>";
+    console.log(mapToken);
+    mapboxgl.accessToken = mapToken;
+    // TO MAKE THE MAP APPEAR YOU MUST
+    // ADD YOUR ACCESS TOKEN FROM
+    // https://account.mapbox.com
+    const map = new mapboxgl.Map({
+    container: 'map', // container ID
+    center: [-74.5, 40], // starting position [lng, lat]
+    zoom: 9 // starting zoom
+    });
+</script> -->

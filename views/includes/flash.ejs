@@ -1,0 +1,13 @@
+<% if(sucess && sucess.length) { %>
+    <div class="alert alert-success alert-dismissible fade show col-xl-6 offset-xl-3 mt-3">
+        <%= sucess %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<% } %>
+
+<% if(error && error.length) { %>
+    <div class="alert alert-danger alert-dismissible fade show col-xl-6 offset-xl-3 mt-3">
+        <%= error %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<% } %>
